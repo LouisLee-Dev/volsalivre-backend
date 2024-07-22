@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const upload = require('../../middleware/upload');
 const validateSchoolRegisterInput = require("../../validation/schools");
 const School = require("../../models/School");
 const Levels = require("../../models/Levels"); // Assuming you have a Levels model
@@ -17,11 +17,11 @@ router.get("/", async (req, res) => {
 });
 
 // Add a new school
-router.post("/add", async (req, res) => {  
-  const { errors, isValid } = validateSchoolRegisterInput(req.body);  
+router.post("/add", upload.single('mark'), async (req, res) => {    
+  const { errors, isValid } = validateSchoolRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
-  }
+  }  
 
   try {
     const existingSchool = await School.findOne({ title: req.body.title });    
@@ -33,15 +33,16 @@ router.post("/add", async (req, res) => {
         if(req.body.position) schoolEdit.position = req.body.position;
         if(req.body.at) schoolEdit.at = req.body.at;
         if(req.body.type) schoolEdit.type = req.body.type;
-        if(req.body.level) schoolEdit.level = req.body.level;
-        if(req.body.years) schoolEdit.years = req.body.years;
-        if(req.body.shift) schoolEdit.shift = req.body.shift;
+        if(req.body.level) schoolEdit.level = JSON.parse(req.body.level);
+        if(req.body.years) schoolEdit.years = JSON.parse(req.body.years);
+        if(req.body.shift) schoolEdit.shift = JSON.parse(req.body.shift);
         if(req.body.series) schoolEdit.series = req.body.series;
         if(req.body.amount) schoolEdit.amount = req.body.amount;
         if(req.body.monthlyState) schoolEdit.monthlyState = req.body.monthlyState;
         if(req.body.regFee) schoolEdit.regFee = req.body.regFee;
         if(req.body.vagas) schoolEdit.vagas = req.body.vagas;
         if(req.body.scholarUnit) schoolEdit.scholarUnit = req.body.scholarUnit;
+        if(req.body.mark) schoolEdit.mark = { contentType: req.file.mimetype, data: req.file.buffer };
   
       const updatedSchool = await School.findOneAndUpdate(
         { title: req.body.title },
@@ -59,11 +60,11 @@ router.post("/add", async (req, res) => {
       title: req.body.title,
       mark: req.body.mark,
       star: req.body.star,
-      level: req.body.level,
+      level: JSON.parse(req.body.level),
       position: req.body.position,
       at: req.body.at,
-      years: req.body.years,
-      shift: req.body.shift,
+      years: JSON.parse(req.body.years),
+      shift: JSON.parse(req.body.shift),
       series: req.body.series,
       type: req.body.type,
       amount: req.body.amount,
@@ -71,13 +72,15 @@ router.post("/add", async (req, res) => {
       regFee: req.body.regFee,
       vagas: req.body.vagas,
       scholarUnit: req.body.scholarUnit,
-    });
-
+      // eslint-disable-next-line no-dupe-keys
+      mark: { contentType: req.file.mimetype, data: req.file.buffer }
+    });    
+    console.log(newSchool);
     await newSchool.save();
     return res.json({ success: "School added successfully" });
 
   } catch (err) {
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: err });
   }
 });
 
@@ -135,7 +138,7 @@ router.get("/getByName", async (req, res) => {
 
 // Get one school (fallback route)
 router.post("/all", async (req, res) => {  
-  console.log(req.body)
+  
   try {
     let schools;
     if(!req.body)
@@ -163,9 +166,5 @@ router.post("/all", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-router.get('/mark/:title', (req, res) => {
-  
-})
 
 module.exports = router;

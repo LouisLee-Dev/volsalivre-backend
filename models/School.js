@@ -9,8 +9,8 @@ const SchoolSchema = new Schema({
     required: true,
   },
   mark: {
-    type: Schema.Types.Buffer,
-    required: false,
+    data: Buffer,
+    contentType: String,
   },
   star: {
     type: String,
