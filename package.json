@@ -7,7 +7,7 @@
     "client-install": "npm i --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "preserver": "start mongod --dbpath ./db",
+    "preserver1": "start mongod --dbpath ./db",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"

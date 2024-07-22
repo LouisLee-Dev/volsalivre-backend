@@ -75,7 +75,7 @@ router.post("/add", upload.single('mark'), async (req, res) => {
       // eslint-disable-next-line no-dupe-keys
       mark: { contentType: req.file.mimetype, data: req.file.buffer }
     });    
-    console.log(newSchool);
+    
     await newSchool.save();
     return res.json({ success: "School added successfully" });
 
@@ -166,5 +166,21 @@ router.post("/all", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+router.get('/img/:title', async (req, res) => {    
+  try {
+    const school = await School.findOne({title: req.params.title});
+    console.log(school.mark);
+
+    if(!school || !school.mark) {
+      return res.status(404).send('Image not found');
+    }
+
+    res.setHeader('Content-Type', school.mark.contentType);
+    res.send(school.mark.data);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+})
 
 module.exports = router;

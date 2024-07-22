@@ -4,10 +4,6 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
 const cors = require('cors');
-// const multer = require('multer');
-// const GridFsStorage = require('multer-gridfs-storage').GridFsStorage;
-// const Grid = require('gridfs-stream');
-
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
@@ -26,7 +22,7 @@ app.use(bodyParser.raw())
 app.use(bodyParser.json());
 
 // DB Config
-const db_uri = require("./config/keys_prod.js").mongoURI;
+const db_uri = process.env.MONGO_URI;
 
 // Connect to MongoDB
 mongoose
