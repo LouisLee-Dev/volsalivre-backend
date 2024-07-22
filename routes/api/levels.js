@@ -1,37 +1,43 @@
 const express = require("express");
-
 const router = express.Router();
-
 const Levels = require("../../models/Levels");
-const validateLevelInput = require("../../validation/level");
+const validateSeriesInput = require("../../validation/level");
 
-router.post("/add", (req, res) => {
-  const { errors, isValid } = validateLevelInput(req.body);
+router.post("/add", async (req, res) => {
+  const { errors, isValid } = validateSeriesInput(req.body);
+
   // Check validation
   if (!isValid) {
-    // If any errors, send 400 with errors object
     return res.status(400).json(errors);
   }
 
-  Levels.findOne({ level: req.body.level }).then((level) => {
-    if (level) {
-      errors.level = "Level is exists";
+  try {
+    const existingLevel = await Levels.findOne({ level: req.body.level });
+
+    if (existingLevel) {
+      errors.level = "Level already exists";
       return res.status(400).json(errors);
     }
 
-    {
-      const newLevel = new Levels({
-        level: req.body.level,
-      });
-      newLevel.save().then((level) => res.json(level));
-    }
-  });
+    const newLevel = new Levels({
+      level: req.body.level,
+    });
+
+    const savedLevel = await newLevel.save();
+    res.json(savedLevel);
+
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
-router.get("/all", (req, res) => {
-  Levels.find().then((level) => {
-    res.status(200).json(level);
-  });
+router.get("/all", async (req, res) => {
+  try {
+    const levels = await Levels.find();
+    res.status(200).json(levels);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 module.exports = router;

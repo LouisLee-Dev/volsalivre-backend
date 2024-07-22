@@ -9,55 +9,71 @@ const SchoolSchema = new Schema({
     required: true,
   },
   mark: {
-    type: String,
+    type: Schema.Types.Buffer,
     required: false,
   },
   star: {
     type: String,
     required: false
   },
-  level:[{
-    level:{
+  series: [{
+    type: String,
+    require: false,
+  }],
+  level:[{ 
+    level:{   // senior middle school   level id
       type: String,
       required: false
     },
-    grade:{
+    grade:{  // 1- 3 years  ex: 3
       type: String,
       required: false
     }
   }],
-  position: {
+  position: {  //   detail position ( distance )
     type:String,
     required:false
   },
-  at: {
+  at: {  // region  (sao paulo)
     type: String,
     required: false
   },
-  years: [{
+  years: [{    // school year
     type: String,
     required: false
   }],
-  shift: [{
+  shift: [{  // shift : morning , afternoon
     type: String,
     required: false
   }],
-  date: {
+  type: {  // public, private
+    type: String,
+    required: false
+  },
+  scholarUnit: {  // currency unit
+    type:String,
+    required: false
+  },
+  amount: {    // currency amount
+    type:String,
+    required: false
+  },
+  monthlyState: {
+    type: String,
+    required: false,
+  },
+  regFee: {
+    type: String,
+    required: false,
+  },
+  vagas: {
+    type: String,
+    required: false,
+  },
+  date: {  // register date
     type: Date,
     default: Date.now(),
   },
-  type: {
-    type: String,
-    required: false
-  },
-  scholarUnit: {
-    type:String,
-    required: false
-  },
-  amount: {
-    type:String,
-    required: false
-  }
 });
 
 module.exports = School = mongoose.model("schools", SchoolSchema);

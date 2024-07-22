@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
 const cors = require('cors');
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage').GridFsStorage;
+const Grid = require('gridfs-stream');
 
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
@@ -11,6 +14,7 @@ const posts = require("./routes/api/posts");
 const schools = require("./routes/api/schools.js");
 const levels = require('./routes/api/levels');
 const shift = require("./routes/api/shift.js");
+const series = require('./routes/api/series.js');
 
 const app = express();
 
@@ -46,6 +50,7 @@ app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 app.use("/api/schools", schools);
+app.use("/api/series", series);
 app.use("/api/levels", levels);
 app.use("/api/shift", shift);
 // Serve static assets if in production

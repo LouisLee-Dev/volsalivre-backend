@@ -6,6 +6,8 @@ module.exports = function validateRegisterInput(data) {
 
   data.name = !isEmpty(data.name) ? data.name : '';
   data.cpf = !isEmpty(data.cpf) ? data.cpf : '';
+  const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+  data.cpf = cpfRegex.test(data.cpf) ? data.cpf : "";
   data.email = !isEmpty(data.email) ? data.email : '';
   data.password = !isEmpty(data.password) ? data.password : '';
   data.password2 = !isEmpty(data.password2) ? data.password2 : '';
@@ -30,10 +32,10 @@ module.exports = function validateRegisterInput(data) {
     errors.password = 'Password field is required';
   }
   if (!Validator.isLength(data.password, { min: 6, max: 6 })) {
-    errors.password = 'Password must be at least 6 characters';
+    errors.password = 'Password must be 6 characters';
   }
   if (!Validator.isLength(data.password2, { min: 6, max: 6 })) {
-    errors.password2 = 'Password must be at least 6 characters';
+    errors.password2 = 'Password must be 6 characters';
   }
   if (!Validator.equals(data.password, data.password2)) {
     errors.password = 'Passwords must match';
