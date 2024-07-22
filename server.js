@@ -2,23 +2,24 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-const path = require("path");
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
-const schools = require("./routes/api/schools.js");
+const schools = require("./routes/api/schools");
 const levels = require('./routes/api/levels');
-const shift = require("./routes/api/shift.js");
-const series = require('./routes/api/series.js');
+const shift = require("./routes/api/shift");
+const series = require('./routes/api/series');
 
 const app = express();
 
 // Body Parser middleware
-
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.raw())
 app.use(bodyParser.json());
 
 // DB Config
@@ -29,8 +30,6 @@ mongoose
   .connect(db_uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
   })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
@@ -49,15 +48,6 @@ app.use("/api/schools", schools);
 app.use("/api/series", series);
 app.use("/api/levels", levels);
 app.use("/api/shift", shift);
-// Serve static assets if in production
-if (process.env.NODE_ENV === "production") {
-  // Set Static Folder
-  app.use(express.static("client/build"));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
 
 const port = process.env.PORT || 5000;
 
