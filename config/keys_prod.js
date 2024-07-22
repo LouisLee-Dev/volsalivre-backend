@@ -1,6 +1,6 @@
 module.exports = {
   // mongoURI: process.env.MONGO_URI,
-  mongoURI: "mongodb+srv://stuartyang1130:1111@bolsa.8hvy6sg.mongodb.net/?retryWrites=true&w=majority&appName=bolsa",
+  mongoURI: "mongodb+srv://louislee0996:1111@cluster0.ppvzsyb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
   // secretOrKey: process.env.SECRET_OR_KEY,
   secretOrKey: "melhousesecret",
   imgBucket: "photos",
