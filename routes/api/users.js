@@ -23,7 +23,8 @@ router.get('/test', (req, res) => {
 // @route POST api/users/register
 // @desc Register users
 // @access public
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res) => {  
+
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -76,13 +77,14 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       // User matched
-      const payload = { id: user.id, name: user.name };
+      const payload = { id: user.id, name: user.name, role: user.role };      
 
       // Sign Token
       const token = await jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 });
       res.json({
         success: true,
         token: `Bearer ${token}`,
+        role: user.role
       });
     } else {
       errors.password = 'Password incorrect';

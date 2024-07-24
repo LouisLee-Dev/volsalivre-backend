@@ -45,9 +45,12 @@ const UserSchema = new Schema({
   },
   managerName: {
     type: String,
-    required: false
+    required: false,
   },
-  
+  role: {
+    type: String,
+    default: 'customer',
+  },
   date: {
     type: Date,
     default: Date.now

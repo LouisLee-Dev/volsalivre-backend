@@ -9,11 +9,12 @@ dotenv.config();
 
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
+const roles = require("./routes/api/role.js");
 const posts = require("./routes/api/posts");
 const schools = require("./routes/api/schools");
 const levels = require('./routes/api/levels');
 const shift = require("./routes/api/shift");
-const series = require('./routes/api/series');
+const series = require("./routes/api/series");
 
 const app = express();
 
@@ -44,6 +45,7 @@ require("./config/passport.js")(passport);
 app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
+app.use("/api/roles", roles);
 app.use("/api/schools", schools);
 app.use("/api/series", series);
 app.use("/api/levels", levels);

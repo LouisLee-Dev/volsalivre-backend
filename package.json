@@ -4,6 +4,7 @@
   "description": "Social Network For Developers",
   "main": "server.js",
   "scripts": {
+    "getIp": "node getIpAddress.js",
     "client-install": "npm i --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",

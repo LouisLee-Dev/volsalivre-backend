@@ -169,8 +169,7 @@ router.post("/all", async (req, res) => {
 
 router.get('/img/:title', async (req, res) => {    
   try {
-    const school = await School.findOne({title: req.params.title});
-    console.log(school.mark);
+    const school = await School.findOne({title: req.params.title});    
 
     if(!school || !school.mark) {
       return res.status(404).send('Image not found');
