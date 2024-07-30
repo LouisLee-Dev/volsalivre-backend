@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Levels = require("../../models/Level");
-const validateSeriesInput = require("../../validation/level");
+const Tipos = require("../../models/Tipo");
+const validateSeriesInput = require("../../validation/tipo.js");
 
 router.post("/add", async (req, res) => {
   const { errors, isValid } = validateSeriesInput(req.body);
@@ -12,19 +12,19 @@ router.post("/add", async (req, res) => {
   }
 
   try {
-    const existingLevel = await Levels.findOne({ level: req.body.level });
+    const existingTipo = await Tipos.findOne({ tipo: req.body.tipo });
 
-    if (existingLevel) {
-      errors.level = "Level already exists";
+    if (existingTipo) {
+      errors.tipo = "Tipo already exists";
       return res.status(400).json(errors);
     }
 
-    const newLevel = new Levels({
-      level: req.body.level,
+    const newTipo = new Tipos({
+      tipo: req.body.tipo,
     });
 
-    const savedLevel = await newLevel.save();
-    res.json(savedLevel);
+    const savedTipo = await newTipo.save();
+    res.json(savedTipo);
 
   } catch (err) {
     res.status(500).json({ error: "Server error" });
@@ -33,8 +33,8 @@ router.post("/add", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const levels = await Levels.find();
-    res.status(200).json(levels);
+    const tipos = await Tipos.find();
+    res.status(200).json(tipos);
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }

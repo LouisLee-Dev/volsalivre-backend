@@ -31,7 +31,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/all", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const roles = await Role.find();
     res.status(200).json(roles);

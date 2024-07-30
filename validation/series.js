@@ -5,10 +5,10 @@ const isEmpty = require('./is-empty');
 module.exports = function validateSeriesInput(data) {
   let errors = {};
 
-  data.level = !isEmpty(data.level) ? data.level : '';
+  data.levelId = !isEmpty(data.levelId) ? data.levelId : '';
 
-  if (Validator.isEmpty(data.level)) {
-    errors.level = 'Level field is required';
+  if (Validator.isEmpty(data.levelId)) {
+    errors.levelId = 'levelId field is required';
   }
 
   if(Validator.isEmpty(data.series)) {

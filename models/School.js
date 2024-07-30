@@ -16,38 +16,38 @@ const SchoolSchema = new Schema({
     type: String,
     required: false
   },
-  series: [{
-    type: String,
-    require: false,
-  }],
-  level:[{ 
-    level:{   // senior middle school   level id
-      type: String,
-      required: false
-    },
-    grade:{  // 1- 3 years  ex: 3
-      type: String,
-      required: false
-    }
-  }],
-  position: {  //   detail position ( distance )
-    type:String,
-    required:false
+  level: {
+    type: Schema.Types.ObjectId,
+    ref: 'levels',
+    required: true,
   },
-  at: {  // region  (sao paulo)
-    type: String,
-    required: false
+  series: {
+    type: Schema.Types.ObjectId,
+    ref: 'series',
+    required: true,
+  },
+  city: {
+    type: Schema.Types.ObjectId,
+    ref: "cities",
+    required: true
+  },
+  neigh: {
+    type: Schema.Types.ObjectId,
+    ref: "neighs",
+    required: true
   },
   years: [{    // school year
     type: String,
     required: false
   }],
-  shift: [{  // shift : morning , afternoon
+  turno: [{  // shift : morning , afternoon
     type: String,
+    ref: "turno",
     required: false
   }],
-  type: {  // public, private
+  tipo: {  // public, private
     type: String,
+    ref: "tipo",
     required: false
   },
   scholarUnit: {  // currency unit

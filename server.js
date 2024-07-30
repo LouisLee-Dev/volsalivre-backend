@@ -7,14 +7,17 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+const cities = require("./routes/api/cities");
+const neighs = require("./routes/api/neighborhoods");
+const turno = require("./routes/api/turno");
+const tipo = require("./routes/api/tipo.js");
+const periodo = require("./routes/api/periodo.js");
 const users = require("./routes/api/users");
-const profile = require("./routes/api/profile");
 const roles = require("./routes/api/role.js");
-const posts = require("./routes/api/posts");
 const schools = require("./routes/api/schools");
 const levels = require('./routes/api/levels');
-const shift = require("./routes/api/shift");
 const series = require("./routes/api/series");
+const stripe = require("./routes/api/stripe.js");
 
 const app = express();
 
@@ -42,14 +45,17 @@ app.use(passport.initialize());
 require("./config/passport.js")(passport);
 
 // Use Routes
+app.use("/api/cities", cities);
+app.use("/api/neighs", neighs);
+app.use("/api/turno", turno);
+app.use("/api/tipo", tipo);
+app.use("/api/periodo", periodo);
 app.use("/api/users", users);
-app.use("/api/profile", profile);
-app.use("/api/posts", posts);
 app.use("/api/roles", roles);
 app.use("/api/schools", schools);
 app.use("/api/series", series);
 app.use("/api/levels", levels);
-app.use("/api/shift", shift);
+app.use("/api/stripe", stripe);
 
 const port = process.env.PORT || 5000;
 

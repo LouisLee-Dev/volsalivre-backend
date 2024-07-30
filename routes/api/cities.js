@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Levels = require("../../models/Level");
-const validateSeriesInput = require("../../validation/level");
+const Cities = require("../../models/Cities");
+const validateSeriesInput = require("../../validation/cities");
 
 router.post("/add", async (req, res) => {
   const { errors, isValid } = validateSeriesInput(req.body);
@@ -12,19 +12,19 @@ router.post("/add", async (req, res) => {
   }
 
   try {
-    const existingLevel = await Levels.findOne({ level: req.body.level });
+    const existingcity = await Cities.findOne({ city: req.body.city });
 
-    if (existingLevel) {
-      errors.level = "Level already exists";
+    if (existingcity) {
+      errors.city = "city already exists";
       return res.status(400).json(errors);
     }
 
-    const newLevel = new Levels({
-      level: req.body.level,
+    const newCity = new Cities({
+      city: req.body.city,
     });
 
-    const savedLevel = await newLevel.save();
-    res.json(savedLevel);
+    const savedcity = await newCity.save();
+    res.json(savedcity);
 
   } catch (err) {
     res.status(500).json({ error: "Server error" });
@@ -33,8 +33,8 @@ router.post("/add", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const levels = await Levels.find();
-    res.status(200).json(levels);
+    const cities = await Cities.find();
+    res.status(200).json(cities);
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }

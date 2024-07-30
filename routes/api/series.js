@@ -21,7 +21,7 @@ router.post("/add", async (req, res) => {
     }
 
     const newSeries = new Series({
-      level: req.body.level,
+      levelId: req.body.levelId,
       series: req.body.series,
     });
 
@@ -33,19 +33,21 @@ router.post("/add", async (req, res) => {
 });
 
 // Get all series
-router.get("/all", async (req, res) => {
+router.get("/", async (req, res) => {
+  const { levelId } = req.query; // Get level from query parameters
   try {
-    const series = await Series.find();
-    res.status(200).json(series);
-  } catch (err) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// Get all series by level
-router.get("/all/:level", async (req, res) => {
-  try {
-    const series = await Series.find({ level: req.params.level });
+    let series;
+    if (levelId) {
+      // If level is provided, filter series by level
+      series = await Series.find({ levelId: levelId })
+        .populate("levelId", "level") // Populate level details; adjust as necessary
+        .exec();
+    } else {
+      // If no level is provided, return all series
+      series = await Series.find()
+        .populate("levelId", "level") // Populate level details for all series
+        .exec();
+    }    
     res.status(200).json(series);
   } catch (err) {
     res.status(500).json({ error: "Server error" });

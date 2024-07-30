@@ -29,7 +29,7 @@ const UserSchema = new Schema({
     ref: 'status',
     required: false
   },
-  institution:{
+  schools:{
     type: Schema.Types.ObjectId,
     ref: 'schools',
     required: false
