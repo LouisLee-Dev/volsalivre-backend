@@ -77,14 +77,15 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       // User matched
-      const payload = { id: user.id, name: user.name, role: user.role };      
+      const payload = { _id: user._id, name: user.name, role: user.role }; 
 
       // Sign Token
       const token = await jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 });
       res.json({
         success: true,
         token: `Bearer ${token}`,
-        role: user.role
+        role: user.role,
+        _id: user._id,
       });
     } else {
       errors.password = 'Password incorrect';

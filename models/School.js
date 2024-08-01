@@ -4,6 +4,11 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const SchoolSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -38,6 +43,7 @@ const SchoolSchema = new Schema({
   },
   years: [{    // school year
     type: String,
+    ref: 'periodo',
     required: false
   }],
   turno: [{  // shift : morning , afternoon
@@ -58,17 +64,23 @@ const SchoolSchema = new Schema({
     type:String,
     required: false
   },
-  monthlyState: {
+  monthlyState: { // monthly fee percent
     type: String,
     required: false,
   },
-  regFee: {
+  regFee: { // real monthly currency
     type: String,
     required: false,
+  },  
+  vagas: {  // resting count
+    type: Number,
+    required: false,
+    default: 0,
   },
-  vagas: {
-    type: String,
+  fullvagas: {
+    type: Number,
     required: false,
+    default: 0,
   },
   date: {  // register date
     type: Date,

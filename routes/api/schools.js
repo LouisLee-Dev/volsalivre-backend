@@ -1,19 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const upload = require('../../middleware/upload');
-const validateSchoolRegisterInput = require("../../validation/schools");
 const School = require("../../models/School");
+const upload = require('../../middleware/upload');
 const { isEmpty } = require("../../validation/is-empty");
+const validateSchoolRegisterInput = require("../../validation/schools");
 
 router.post("/add", upload.single('mark'), async (req, res) => {    
   const { errors, isValid } = validateSchoolRegisterInput(req.body);  
+  
   if (!isValid) {  
+    console.log(errors);
     return res.status(400).json(errors);  
   }  
+
 
   try {  
     const existingSchool = await School.findOne({ title: req.body.title });    
     const schoolData = {  
+      user: req.body.user,
       title: req.body.title,
       star: req.body.star,
       city: req.body.city,
@@ -22,14 +26,17 @@ router.post("/add", upload.single('mark'), async (req, res) => {
       level: req.body.level,
       series: req.body.series,
       years: JSON.parse(req.body.years || '[]'),  
-      turno: JSON.parse(req.body.shift || '[]'),
+      turno: JSON.parse(req.body.turno || '[]'),
       amount: req.body.amount,  
       monthlyState: req.body.monthlyState,  
       regFee: req.body.regFee,  
       vagas: req.body.vagas,  
+      fullvagas: req.body.fullvagas,
       scholarUnit: req.body.scholarUnit,  
       mark: req.file ? { contentType: req.file.mimetype, data: req.file.buffer } : undefined,  
     };  
+
+    console.log(schoolData);
 
     if (existingSchool) {  
       const updatedSchool = await School.findOneAndUpdate(  
@@ -58,14 +65,15 @@ router.get("/", async (req, res) => {
 
     // Build the query conditionally based on request body  
     const conditions = [  
+      { key: 'user', value: req.params.user },
       { key: 'title', value: req.params.title },  
       { key: 'city', value: req.params.city },  
       { key: 'neigh', value: req.params.neigh },  
       { key: 'level', value: req.params.level },  
       { key: 'series', value: req.params.series },  
       { key: 'years', value: req.params.years, isArray: true },  
-      { key: 'turno', value: req.params.shift, isArray: true },  
-      { key: 'vagas', value: req.params.vagas },  
+      { key: 'turno', value: req.params.turno, isArray: true },  
+      { key: 'fullvagas', value: req.params.vagas },  
       { key: 'amount', value: req.params.amount }  
     ];  
 
@@ -74,6 +82,7 @@ router.get("/", async (req, res) => {
         if (cond.isArray) {  
           // If the condition is an array (years or shift), ensure we only add it if it's not empty  
           if (!isEmpty(cond.value)) {  
+
             query[cond.key] = { $in: cond.value };  
           }  
         } else {  
@@ -90,7 +99,7 @@ router.get("/", async (req, res) => {
         .populate('levels', ['level'])
         .populate('series', ['series'])
         .populate('cities', ['city'])
-        .populate('neighs', ['neigh'])
+        .populate('neighs', ['neigh'])        
         .then(schools => {
             res.status(200).json(schools);
         })
@@ -125,30 +134,6 @@ router.get('/img/:title', async (req, res) => {
     res.status(500).send('Server error');
   }
 })
-
-router.post("/level/add/:title", async (req, res) => {
-  try {
-    const level = await Levels.findOne({ level: req.body.level });
-    if (!level) {
-      return res.status(400).json({ errors: "Level does not exist" });
-    }
-
-    const school = await School.findOne({ title: req.params.title });
-    if (!school) {
-      return res.status(400).json({ errors: "School does not exist" });
-    }
-
-    if (school.level.includes(level._id)) {
-      return res.status(400).json({ errors: `${req.body.level} already exists` });
-    }
-
-    school.level.push(level._id);
-    await school.save();
-    res.json(school);
-  } catch (err) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
 
 // Get schools by type 'private'
 router.get("/getByPrivate", async (req, res) => {
