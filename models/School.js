@@ -82,6 +82,10 @@ const SchoolSchema = new Schema({
     required: false,
     default: 0,
   },
+  comments: {
+    type: String,
+    required: false,
+  },
   date: {  // register date
     type: Date,
     default: Date.now(),
