@@ -9,25 +9,24 @@ const StudentSchema = new Schema({
     required: true,
   },
   parent: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "users",
     required: false,
-  },
-  cpf: {
-    type: String,
-    required: false
-  },
-  // insert series field
-  serie: {
-    type: String,
-    requireed: false
+  },  
+  school: {
+    type: Schema.Types.ObjectId,
+    ref: "schools",
+    required: true,
   },
   year: {    // school year
     type: String,
+    ref: 'periodo',
     required: false
   },
-  status: {
-    type: String,
-    requireed: false
+  tipo: {
+    type: Schema.Types.ObjectId,
+    ref: "tipos",
+    required: true,
   },
   date: {  // register date
     type: Date,

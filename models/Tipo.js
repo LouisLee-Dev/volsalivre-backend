@@ -9,7 +9,7 @@ const TipoSchema = new Schema({
     },
 })
 
-module.exports = Tipo = mongoose.model('tipo', TipoSchema);
+module.exports = Tipo = mongoose.model('tipos', TipoSchema);
 
 // Regular (sempre pré selecionado)
 // EJA

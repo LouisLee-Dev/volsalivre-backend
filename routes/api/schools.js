@@ -73,6 +73,8 @@ router.get("/", async (req, res) => {
   try {
     const query = {};
 
+    console.log(req.params);
+
     // Build the query conditionally based on request body  
     const conditions = [
       { key: 'user', value: req.params.user },

@@ -103,4 +103,13 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
   res.json(req.user);
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (e) {
+    res.status(400).json(e)
+  }
+})
+
 module.exports = router;
