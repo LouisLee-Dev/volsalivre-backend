@@ -172,5 +172,18 @@ router.get("/getByName", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+// TO DO Task
+// Get school by location
+router.get("/getByName", async (req, res) => {
+  try {
+    const school = await School.findOne({ title: req.body.location });
+    if (!school) {
+      return res.status(400).json({ errors: "School not found" });
+    }
+    res.status(200).json(school);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 module.exports = router;
